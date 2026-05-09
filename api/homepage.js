@@ -1,10 +1,13 @@
 const apiClient = require('../utils/apiClient');
+const { setCorsHeaders, handleCorsPreFlight } = require('../utils/corsHeaders');
 
 module.exports = async (req, res) => {
+  // Set CORS headers
+  setCorsHeaders(res);
+  
   // Handle CORS preflight requests
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+  const corsResult = handleCorsPreFlight(req, res);
+  if (corsResult !== null) return corsResult;
 
   // Only allow GET requests
   if (req.method !== 'GET') {
@@ -28,10 +31,18 @@ module.exports = async (req, res) => {
     });
     
   } catch (error) {
-    return res.status(error.status || 500).json({
-      status: error.status || 500,
+    const statusCode = error.status || 500;
+    const errorResponse = {
+      status: statusCode,
       success: false,
       message: error.message || 'Internal server error'
-    });
+    };
+    
+    // Include error code for authentication failures
+    if (error.code) {
+      errorResponse.code = error.code;
+    }
+    
+    return res.status(statusCode).json(errorResponse);
   }
 };

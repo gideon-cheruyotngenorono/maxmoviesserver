@@ -1,9 +1,13 @@
 const apiClient = require('../utils/apiClient');
+const { setCorsHeaders, handleCorsPreFlight } = require('../utils/corsHeaders');
 
 module.exports = async (req, res) => {
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+  // Set CORS headers
+  setCorsHeaders(res);
+  
+  // Handle CORS preflight requests
+  const corsResult = handleCorsPreFlight(req, res);
+  if (corsResult !== null) return corsResult;
 
   if (req.method !== 'GET') {
     return res.status(405).json({
@@ -30,18 +34,38 @@ module.exports = async (req, res) => {
 
     const data = await apiClient.get(`/sources/${id}`, params);
     
-    return res.status(200).json({
+    // Extract and include direct video URLs if available
+    const response = {
       status: 200,
       success: true,
       creator: "GiftedTech",
+      id: id,
       ...data
-    });
+    };
+    
+    // If the API returns sources with URLs, include them with proxy options
+    if (data.sources && Array.isArray(data.sources)) {
+      response.sources_with_proxy = data.sources.map(source => ({
+        ...source,
+        // Add a proxy URL option for each source (client can choose direct or proxied)
+        proxy_url: source.url ? `/api/proxy?url=${encodeURIComponent(source.url)}` : null
+      }));
+    }
+    
+    return res.status(200).json(response);
     
   } catch (error) {
-    return res.status(error.status || 500).json({
-      status: error.status || 500,
+    const statusCode = error.status || 500;
+    const errorResponse = {
+      status: statusCode,
       success: false,
       message: error.message || 'Internal server error'
-    });
+    };
+    
+    if (error.code) {
+      errorResponse.code = error.code;
+    }
+    
+    return res.status(statusCode).json(errorResponse);
   }
 };
