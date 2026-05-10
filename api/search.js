@@ -31,13 +31,16 @@ module.exports = async (req, res) => {
 
     const data = await apiClient.get(`/search/${encodeURIComponent(query)}`, { page });
     
+    // Remove GiftedTech creator from API response
+    const { creator, ...restData } = data;
+    
     return res.status(200).json({
       status: 200,
       success: true,
       creator: "Max",
       query: query,
       page: parseInt(page),
-      ...data
+      ...restData
     });
     
   } catch (error) {

@@ -22,12 +22,15 @@ module.exports = async (req, res) => {
     // Forward the request to the actual API
     const data = await apiClient.get('/homepage');
     
+    // Remove GiftedTech creator from API response
+    const { creator, ...restData } = data;
+    
     // Return the response
     return res.status(200).json({
       status: 200,
       success: true,
       creator: "Max",
-      ...data
+      ...restData
     });
     
   } catch (error) {

@@ -36,13 +36,16 @@ module.exports = async (req, res) => {
 
     const data = await apiClient.get(`/sources/${id}`, params);
     
+    // Remove GiftedTech creator field from API response
+    const { creator, ...restData } = data;
+    
     // Extract and include direct video URLs if available
     const response = {
       status: 200,
       success: true,
       creator: "Max",
       id: id,
-      ...data
+      ...restData
     };
     
     // If the API returns sources with URLs, include them with proxy options

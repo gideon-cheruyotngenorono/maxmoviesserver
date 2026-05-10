@@ -20,11 +20,14 @@ module.exports = async (req, res) => {
   try {
     const data = await apiClient.get('/trending');
     
+    // Remove GiftedTech creator from API response
+    const { creator, ...restData } = data;
+    
     return res.status(200).json({
       status: 200,
       success: true,
       creator: "Max",
-      ...data
+      ...restData
     });
     
   } catch (error) {
