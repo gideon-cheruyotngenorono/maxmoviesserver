@@ -30,31 +30,12 @@ module.exports = async (req, res) => {
     }
 
     const data = await apiClient.get(`/search/${encodeURIComponent(query)}`, { page });
-    
-    // Remove GiftedTech creator from API response
-    const { creator, ...restData } = data;
-    
-    return res.status(200).json({
-      status: 200,
-      success: true,
-      creator: "Max",
-      query: query,
-      page: parseInt(page),
-      ...restData
-    });
+    return res.status(200).json(data);
     
   } catch (error) {
     const statusCode = error.status || 500;
-    const errorResponse = {
-      status: statusCode,
-      success: false,
-      message: error.message || 'Internal server error'
-    };
-    
-    if (error.code) {
-      errorResponse.code = error.code;
-    }
-    
-    return res.status(statusCode).json(errorResponse);
+    return res.status(statusCode).json({
+      error: error.message || 'Internal server error'
+    });
   }
 };
