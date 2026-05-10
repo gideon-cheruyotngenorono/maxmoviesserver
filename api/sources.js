@@ -18,7 +18,9 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { id, season, episode } = req.query;
+    const { id, season, episode } = req.params;
+  const seasonParam = req.query.season || season;
+  const episodeParam = req.query.episode || episode;
     
     if (!id) {
       return res.status(400).json({
@@ -29,8 +31,8 @@ module.exports = async (req, res) => {
     }
 
     let params = {};
-    if (season) params.season = season;
-    if (episode) params.episode = episode;
+    if (seasonParam) params.season = seasonParam;
+    if (episodeParam) params.episode = episodeParam;
 
     const data = await apiClient.get(`/sources/${id}`, params);
     

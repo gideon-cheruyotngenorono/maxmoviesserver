@@ -8,9 +8,9 @@
     { "source": "/", "destination": "/api/test.js" },
     { "source": "/api/v2/homepage", "destination": "/api/homepage.js" },
     { "source": "/api/v2/trending", "destination": "/api/trending.js" },
-    { "source": "/api/v2/search", "destination": "/api/search.js" },
-    { "source": "/api/v2/info", "destination": "/api/info.js" },
-    { "source": "/api/v2/sources", "destination": "/api/sources.js" },
+    { "source": "/api/v2/search/:query", "destination": "/api/search.js" },
+    { "source": "/api/v2/info/:id", "destination": "/api/info.js" },
+    { "source": "/api/v2/sources/:id", "destination": "/api/sources.js" },
     { "source": "/api/proxy", "destination": "/api/proxy.js" }
   ],
   "headers": [

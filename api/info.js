@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { id } = req.query;
+    const { id } = req.params;
     
     if (!id) {
       return res.status(400).json({
