@@ -50,6 +50,9 @@ module.exports = async (req, res) => {
     }
 
     return res.status(200).json({
+      status: 200,
+      success: true,
+      creator: "Max",
       id: id,
       results: results,
       subtitles: data.subtitles || []
@@ -58,6 +61,9 @@ module.exports = async (req, res) => {
   } catch (error) {
     const statusCode = error.status || 500;
     return res.status(statusCode).json({
+      status: statusCode,
+      success: false,
+      creator: "Max",
       error: error.message || 'Internal server error'
     });
   }

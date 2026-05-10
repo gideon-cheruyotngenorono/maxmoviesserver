@@ -19,11 +19,19 @@ module.exports = async (req, res) => {
 
   try {
     const data = await apiClient.get('/trending');
-    return res.status(200).json(data);
+    return res.status(200).json({
+      status: 200,
+      success: true,
+      creator: "Max",
+      ...data
+    });
     
   } catch (error) {
     const statusCode = error.status || 500;
     return res.status(statusCode).json({
+      status: statusCode,
+      success: false,
+      creator: "Max",
       error: error.message || 'Internal server error'
     });
   }
