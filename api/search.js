@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { query } = req.params;
+    const { query } = req.query;
     const page = req.query.page || 1;
     
     if (!query) {

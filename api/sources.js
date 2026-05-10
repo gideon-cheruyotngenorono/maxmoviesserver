@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { id, season, episode } = req.params;
+    const { id, season, episode } = req.query;
   const seasonParam = req.query.season || season;
   const episodeParam = req.query.episode || episode;
     
