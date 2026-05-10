@@ -2,10 +2,13 @@ const axios = require('axios');
 
 class MovieAPIClient {
   constructor() {
-    this.baseURL = 'https://movieapi.giftedtech.co.ke/api/v2';
+    // Use custom backend URL if provided, otherwise fall back to GiftedTech
+    this.baseURL = process.env.BACKEND_URL || 'https://movieapi.giftedtech.co.ke/api/v2';
     
     // Get API key from environment variables
     this.apiKey = process.env.GIFTED_API_KEY;
+    
+    console.log('🔗 Using Backend URL:', this.baseURL);
     
     if (!this.apiKey) {
       console.error('❌ ERROR: GIFTED_API_KEY environment variable is NOT set');
