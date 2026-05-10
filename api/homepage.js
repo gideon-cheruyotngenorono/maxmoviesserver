@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
     return res.status(200).json({
       status: 200,
       success: true,
-      creator: "GiftedTech",
+      creator: "Max",
       ...data
     });
     

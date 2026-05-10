@@ -38,7 +38,7 @@ module.exports = async (req, res) => {
     const response = {
       status: 200,
       success: true,
-      creator: "GiftedTech",
+      creator: "Max",
       id: id,
       ...data
     };
